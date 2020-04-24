@@ -2,18 +2,12 @@
 #include <conio.h>
 #include <Windows.h>
 using namespace std;
-
+//make the output window full screen
 int main() {
 	vector<int> snakex = { 10, 11, 12, 13 };
 	vector<int> snakey = { 5, 5, 5, 5 };
-	int sx = 10, sy = 10;
 	char dir = 'R';
-	int c = 0;
-	int x = 1, y = 0;
-	int fx = 20;
-	int fy = 10;
-	int fruit = 1;
-	int score = 0;
+	int c = 0, x = 1, y = 0, fx = 20, fy = 10, food = 1, score = 0, over = 0, done = 0;
 	while (true) {
 		Sleep(10);
 		system("cls");
@@ -25,10 +19,10 @@ int main() {
 			cout << " ";
 		}
 		cout << "Use arrow keys to play" << endl;
-		if (fruit == 0) {
+		if (food == 0) {
 			fx = rand() % 51 + 1;
 			fy = rand() % 24 + 1;
-			fruit = 1;
+			food = 1;
 		}
 		for (int i = 0; i < 52; i++) {
 			cout << "#";
@@ -39,7 +33,7 @@ int main() {
 			for (int j = 0; j < 50; j++) {
 				if (i == fy && j == fx) cout << "F";
 				else {
-					int done = 0;
+					done = 0;
 					for (int k = 0; k < snakex.size(); k++) {
 						if (i == snakey[k] && j == snakex[k]) {
 							cout << 'O';
@@ -60,57 +54,36 @@ int main() {
 			cout << " ";
 		}
 		cout << "SCORE = " << score << endl;
-		int flag = 1;
+		if (over == 1) break;
 		if (_kbhit()) {
 			c = _getch();
 			c = _getch();
-
 			switch (c) {
 			case 72:
-				if (dir == 'D') {
-					flag = 0;
-					break;
-				}
+				if (dir == 'D') break;
 				y = -1;
 				x = 0;
-				sy--;
 				dir = 'U';
 				break;
 			case 80:
-				if (dir == 'U') {
-					flag = 0;
-					break;
-				}
+				if (dir == 'U') break;
 				y = 1;
 				x = 0;
-				sy++;
 				dir = 'D';
 				break;
 			case 77:
-				if (dir == 'L') {
-					flag = 0;
-					break;
-				}
+				if (dir == 'L') break;
 				x = 1;
 				y = 0;
-				sx++;
 				dir = 'R';
 				break;
 			case 75:
-				if (dir == 'R') {
-					flag = 0;
-					break;
-				}
+				if (dir == 'R') break;
 				x = -1;
 				y = 0;
-				sx--;
 				dir = 'L';
 				break;
-			default: flag = 0;
 			}
-		}
-		else {
-			flag = 0;
 		}
 		int savex = snakex[0];
 		int savey = snakey[0];
@@ -120,15 +93,19 @@ int main() {
 		}
 		snakex[snakex.size() - 1] += x;
 		snakey[snakex.size() - 1] += y;
-		if (snakex[snakex.size() - 2] == 50 || snakex[snakex.size() - 2] == -1 || snakey[snakex.size() - 2] == -1 || snakey[snakex.size() - 2] == 25) {
-			break;
+		over = 0;
+		if (snakex[snakex.size() - 2] == 50 || snakex[snakex.size() - 2] == -1 || snakey[snakex.size() - 2] == -1 || snakey[snakex.size() - 2] == 25) break;
+		for (int i = 0; i < snakex.size() - 1; i++) {
+			if (snakex[i] == snakex[snakex.size() - 1] && snakey[i] == snakey[snakex.size() - 1]) {
+				over = 1;
+				break;
+			}
 		}
 		if (snakex[snakex.size() - 1] == fx && snakey[snakey.size() - 1] == fy) {
-			fruit = 0;
+			food = 0;
 			snakex.insert(snakex.begin(), savex);
 			snakey.insert(snakey.begin(), savey);
 			score += 1;
 		}
 	}
-	return 0;
 }
