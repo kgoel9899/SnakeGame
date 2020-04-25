@@ -4,8 +4,7 @@
 using namespace std;
 //make the output window full screen
 int main() {
-	vector<int> snakex = { 10, 11, 12, 13 };
-	vector<int> snakey = { 5, 5, 5, 5 };
+	vector<int> snakex = { 10, 11, 12, 13 }, snakey = { 5, 5, 5, 5 };
 	char dir = 'R';
 	int c = 0, x = 1, y = 0, fx = 20, fy = 10, food = 1, score = 0, over = 0, done = 0;
 	while (true) {
@@ -58,31 +57,33 @@ int main() {
 		if (_kbhit()) {
 			c = _getch();
 			c = _getch();
-			switch (c) {
-			case 72:
-				if (dir == 'D') break;
-				y = -1;
-				x = 0;
-				dir = 'U';
-				break;
-			case 80:
-				if (dir == 'U') break;
-				y = 1;
-				x = 0;
-				dir = 'D';
-				break;
-			case 77:
-				if (dir == 'L') break;
-				x = 1;
-				y = 0;
-				dir = 'R';
-				break;
-			case 75:
-				if (dir == 'R') break;
-				x = -1;
-				y = 0;
-				dir = 'L';
-				break;
+			if (c == 72) {
+				if (dir != 'D') {
+					y = -1;
+					x = 0;
+					dir = 'U';
+				}
+			}
+			else if (c == 80) {
+				if (dir != 'U') {
+					y = 1;
+					x = 0;
+					dir = 'D';
+				}
+			}
+			else if (c == 77) {
+				if (dir != 'L') {
+					x = 1;
+					y = 0;
+					dir = 'R';
+				}
+			}
+			else if (c == 75) {
+				if (dir != 'R') {
+					x = -1;
+					y = 0;
+					dir = 'L';
+				}
 			}
 		}
 		int savex = snakex[0];
